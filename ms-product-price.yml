@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-product-price
+  labels:
+    app: ms-product-price
+    service: ms-product-price
+spec:
+  ports:
+  - port: 80
+    name: http
+    targetPort: 8081
+  selector:
+    app: ms-product-price
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ms-product-price
+  labels:
+    account: ms-product-price
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-product-price
+  labels:
+    app: ms-product-price
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-product-price
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ms-product-price
+        version: v1
+    spec:
+      serviceAccountName: ms-product-price
+      containers:
+      - name: ms-product-price
+        image: moisesba/ms-product-price:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8081
+        securityContext:
+          runAsUser: 1000
