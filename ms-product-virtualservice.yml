@@ -1,0 +1,27 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: ms-product-vs
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - config-ns/default-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /ms-product/
+    rewrite:
+      uri: /      
+    route:
+    - destination:
+        host: ms-product
+  - match:
+    - uri:
+        prefix: /ms-product-price/
+    rewrite:
+      uri: /          
+    route:
+    - destination:
+        host: ms-product-price
+
