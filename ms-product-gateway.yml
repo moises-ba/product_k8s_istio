@@ -25,13 +25,18 @@ spec:
   http:
   - match:
     - uri:
-        prefix: /product
+        prefix: /ms-product/
+    rewrite:
+      uri: /      
     route:
     - destination:
         host: ms-product
   - match:
     - uri:
-        prefix: /price
+        prefix: /ms-product-price/
+    rewrite:
+      uri: /          
     route:
     - destination:
         host: ms-product-price
+
